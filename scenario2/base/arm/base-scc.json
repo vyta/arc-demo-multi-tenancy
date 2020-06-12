@@ -1,6 +1,6 @@
 {
     "properties": {
-         "repositoryUrl": "git@github.com:Azure-Samples/arc-demo-multi-tenancy.git",
+         "repositoryUrl": "<REPO>",
             "operatorNamespace": "cluster",
             "operatorInstanceName": "cluster-operator",
             "operatorType": "Flux",

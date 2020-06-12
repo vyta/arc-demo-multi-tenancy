@@ -6,10 +6,6 @@
             "operatorType": "Flux",
             "operatorScope": "namespace",
             "enableHelmOperator": "false",
-            "helmOperatorProperties": {
-                  "chartVersion": "0.6.0",
-                  "chartValues": "--set helm.versions=v3 --set allowNamespace=<TENANT>"
-            },
             "operatorParams": "--git-branch master --git-path <PATH> --git-readonly --manifest-generation true"
       }
 }

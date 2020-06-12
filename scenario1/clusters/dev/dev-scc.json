@@ -1,6 +1,6 @@
 {
     "properties": {
-         "repositoryUrl": "git@ssh.dev.azure.com:v3/lecattar/azure-arc-for-k8s/cluster-mgmt",
+         "repositoryUrl": "",
             "operatorNamespace": "cluster",
             "operatorInstanceName": "cluster-operator",
             "operatorType": "Flux",

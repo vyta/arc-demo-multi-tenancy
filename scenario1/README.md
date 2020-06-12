@@ -16,28 +16,41 @@ Hosting many teams on a single cluster
 
 You will need...
 
-* a connected cluster, CLUSTER_NAME
+* at least one connected cluster, PROD_CLUSTER_NAME. Optionally a second cluster for dev
 * a SUB_ID, the azure subscription of connected cluster
 * a ARC_RG, the azure resource group of connected cluster
 
 1. Fork/clone this repository
-1. Run the following
+1. Run the following where `REPO` is the ssh path of your newly forked repo
 
     ```sh
     # Dedicate tenant space on Prod cluster
-    ./scripts/configure-tenant.sh --cluster $CLUSTER_NAME --arc-rg $ARC_RG \
+    ./scripts/configure-tenant.sh --repo $REPO \
+        --cluster $PROD_CLUSTER_NAME --arc-rg $ARC_RG \
         --subscriptionId $SUB_ID --tenant team-1 \
         --tenant-git git@github.com:vyta/azure-voting-gitops-demo.git --tenant-git-path prod \
         --deploy
-    
-    # Dedicate tenant space on Dev cluster
-    ./scripts/configure-tenant.sh --cluster dev --arc-rg ARC_RG \
+
+    # Optional: Dedicate tenant space on Dev cluster
+    ./scripts/configure-tenant.sh --repo $REPO \
+        --cluster $DEV_CLUSTER_NAME --arc-rg $ARC_RG \
         --subscriptionId SUB_ID --tenant team-1 \
         --tenant-git git@github.com:vyta/azure-voting-gitops-demo.git --force --tenant-git-path dev \
         --deploy
     ```
 
-1. Git push to master to observe changes on cluster
+1. Grab ssh key:
+  
+    ```sh
+    # Using az cli
+    az k8sconfiguration show -g $ARC_RG -c $CLUSTER_NAME -n $CLUSTER_NAME-base-config
+
+    # Using kubectl
+    kubectl get gitconfig $CLUSTER_NAME-base-config -n cluster
+    ```
+
+1. Git push to master of forked repo
+1. Observe resources on cluster via kubectl: `kubectl get all -n custom-a`
 
 ## configure-tenant.sh
 

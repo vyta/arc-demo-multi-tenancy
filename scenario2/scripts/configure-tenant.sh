@@ -13,7 +13,8 @@ FORCE=false
 
 
 usage () {
-  echo "Usage: ./configure-tenant.sh [-c|--cluster CLUSTER_NAME] [-t|--tenant TENANT] [-s|--subscriptionId SUB_ID ] [-g|--arc-rg ARC_RG ] "
+  echo "Usage: ./configure-tenant.sh [-r|--repo REPO] [-c|--cluster CLUSTER_NAME] [-t|--tenant TENANT] [-s|--subscriptionId SUB_ID ] [-g|--arc-rg ARC_RG ] [--tenant-git GIT]"
+  echo "  -r, --repo               Required: git@github.com:GITUSER/arc-demo-multi-tenancy.git"
   echo "  -c, --cluster            Required: Name of connected cluster"
   echo "  -t, --tenant             Name of tenant"
   echo "  -a, --app                Path to application to application"
@@ -34,6 +35,10 @@ deploy () {
 while [[ "$#" -gt 0 ]]
 do
   case $1 in
+    -r|--repo)
+      REPO=$2
+      shift 2
+      ;;
     -c|--cluster)
       CLUSTER_NAME=$2
       CLUSTER_DIR=clusters/$2
@@ -106,6 +111,7 @@ clusterSCC=$CLUSTER_DIR/$CLUSTER_NAME-scc.json
 if [ ! -e $clusterSCC ] || [ "$FORCE" == true ] ; then 
   echo "Creating $CLUSTER_NAME cluster SCC from $BASE_SCC"
   cp $BASE_SCC $clusterSCC
+  sed -i -e 's <REPO> '$REPO' g' $clusterSCC
   sed -i -e 's <PATH> '$CLUSTER_DIR' g' $clusterSCC
 fi
 
